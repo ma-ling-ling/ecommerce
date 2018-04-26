@@ -1,0 +1,39 @@
+<h3> Orders History </h3>
+<h4> You have <%= pluralize(@orders.count, "order") %> placed in the past! </h4>
+
+<% @orders.each do |order| %>
+	<div class = "panel panel-default">
+		<div class="panel-heading">
+			<p><strong> Order ID: </strong><%= order.id %> </p>
+			<strong> Order Placed: </strong><%= order.created_at.strftime("%m/%d/%Y - %I%M%P") %> </p>
+			<strong> Customer: </strong> <%= order.user.name %> </p>
+		</div>
+		<div class = "panel-body">
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Product</th>
+						<th> Quantity</th>
+						<th> Unit Price</th>
+						<th> Total Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% order.order_items.each do |key, value| %>
+						<tr>
+							<td> <%= Product.find(key).name %></td>
+							<td> <%=  value %></td>
+							<td> <%=  number_to_currency Product.find(key).price %></td>
+							<td> <%=  number_to_currency Product.find(key).price * value %></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class = "panel-footer">
+				<p> <strong> Subtotal: </strong> <%= number_to_currency order.subtotal %> </p>
+				<p> <strong> Tax: </strong> <%= number_to_currency order.sales_tax  %> </p>
+				<p> <strong> Grand Total: </strong> <%= number_to_currency order.grand_total %> </p>
+		</div>
+	</div>
+<% end %>

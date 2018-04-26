@@ -39,5 +39,8 @@
   <%= image_tag @product.image, size: 200, class: "img-responsive" %>
 </p>
 
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<% if can? :update, @product %>    <!-- cancancan way of restricting guests from accessing "edit" products link, can also: <%# if current_user.admin? %>-->
+  <%= link_to 'Edit', edit_product_path(@product) %> |
+  <%= link_to 'Back', products_path %>
+
+<% end %>
